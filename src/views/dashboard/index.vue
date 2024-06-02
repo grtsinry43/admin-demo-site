@@ -1,6 +1,8 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <div class="dashboard-text">
+      欢迎使用个人博客后台<br/>
+      当前登录身份: {{ name }}</div>
   </div>
 </template>
 
