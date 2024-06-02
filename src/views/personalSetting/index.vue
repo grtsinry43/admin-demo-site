@@ -1,6 +1,6 @@
 <template>
     <div>
-        这是留言板
+        个人设置
     </div>
 </template>
 

@@ -1,12 +1,10 @@
-import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
-import { resetRouter } from '@/router'
+import {login, getInfo} from '@/api/user'
+import {getToken, setToken, removeToken} from '@/utils/auth'
+import {resetRouter} from '@/router'
 
 const getDefaultState = () => {
   return {
-    token: getToken(),
-    name: '',
-    avatar: ''
+    user: null // 存储登录后的用户的信息
   }
 }
 
@@ -24,62 +22,98 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_USER: (state, payload) => {
+    state.user = payload;
   }
 }
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
-    const { username, password } = userInfo
+  login({commit}, userInfo) {
+
+    // userInfo 是用户提交的数据，接下来，我们就应该把这个数据发送到服务器
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
+      login(userInfo).then(res => {
+        const {data} = res;
+        if (data) {
+          // 说明 data 里面有数据
+          commit('SET_USER', data);
+          resolve();
+        } else {
+          reject(res)
+        }
       }).catch(error => {
-        reject(error)
+        reject(error);
       })
     })
+
+
+    // const { username, password } = userInfo
+    // return new Promise((resolve, reject) => {
+    //   login({ username: username.trim(), password: password }).then(response => {
+    //     const { data } = response
+    //     commit('SET_TOKEN', data.token)
+    //     setToken(data.token)
+    //     resolve()
+    //   }).catch(error => {
+    //     reject(error)
+    //   })
+    // })
   },
 
   // get user info
-  getInfo({ commit, state }) {
+  getInfo({commit, state}) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
 
-        if (!data) {
-          return reject('Verification failed, please Login again.')
+      getInfo().then(res => {
+        if (typeof res === 'string') {
+          //未登录或者token失效
+          res = JSON.parse(res);
+          if (res.code === 401) {
+            //未登录
+            removeToken();
+            resetRouter();
+            commit('RESET_STATE');
+            reject(res.msg);
+          }
+        } else {
+          commit('SET_USER', res.data);
+          resolve(res);
         }
-
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
       })
+
+
+      // getInfo(state.token).then(response => {
+      //   const {data} = response
+      //
+      //   if (!data) {
+      //     return reject('Verification failed, please Login again.')
+      //   }
+      //
+      //   const {name, avatar} = data
+      //
+      //   commit('SET_NAME', name)
+      //   commit('SET_AVATAR', avatar)
+      //   resolve(data)
+      // }).catch(error => {
+      //   reject(error)
+      // })
     })
   },
 
   // user logout
-  logout({ commit, state }) {
+  logout({commit, state}) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      removeToken() // must remove  token  first
+      resetRouter()
+      commit('RESET_STATE')
+      resolve()
     })
   },
 
   // remove token
-  resetToken({ commit }) {
+  resetToken({commit}) {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
       commit('RESET_STATE')
