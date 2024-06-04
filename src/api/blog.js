@@ -89,3 +89,5 @@ export function updateBlogType(editInfo) {
     data: editInfo.data
   })
 }
+
+
