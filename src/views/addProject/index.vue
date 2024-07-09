@@ -1,12 +1,12 @@
 <template>
-    <div>
-        添加项目
+    <div class="app-container">
+
     </div>
 </template>
 
 <script>
     export default {
-        
+
     }
 </script>
 

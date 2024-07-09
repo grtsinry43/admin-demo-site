@@ -30,64 +30,38 @@ export function deleteBlog(id) {
 }
 
 /**
- * 添加文章分类
+ * 添加文章
  * @param data
- * @return {*}
+ * @returns {*}
  */
-export function addBlogType(data) {
+export function addBlog(data) {
   return request({
-    url: '/api/blogtype',
+    url: '/api/blog',
     method: 'post',
     data
   })
 }
 
 /**
- * 获取文章分类
- * @return {*}
+ * 编辑文章
+ * @param blogInfo
  */
-export function getBlogType() {
+export function editBlog(blogInfo){
   return request({
-    url: `/api/blogtype`,
-    method: 'get'
-  })
-}
-
-/**
- * 获取一个文章分类
- * @return {*}
- */
-export function getOneBlogType(id) {
-  return request({
-    url: `/api/blogtype/${id}`,
-    method: 'get'
-  })
-}
-
-
-/**
- * 删除文章分类
- * @param id
- * @return {*}
- */
-export function deleteBlogType(id) {
-  return request({
-    url: `/api/blogtype/${id}`,
-    method: 'delete',
-  });
-}
-
-/**
- * 修改文章分类
- * @return {*}
- * @param editInfo
- */
-export function updateBlogType(editInfo) {
-  return request({
-    url: `/api/blogtype/${editInfo.id}`,
+    url: `/api/blog/${blogInfo.id}`,
     method: 'put',
-    data: editInfo.data
+    data: blogInfo.data
   })
 }
 
+/**
+ * 获取一个文章
+ * @param id
+ */
+export function getOneBlog(id){
+  return request({
+    url: `/api/blog/${id}`,
+    method: 'get'
+  })
+}
 
