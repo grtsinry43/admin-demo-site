@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import {addBlogType, deleteBlogType, getBlogType, getOneBlogType, updateBlogType} from "@/api/blog";
+import {addBlogType, deleteBlogType, getBlogType, getOneBlogType, updateBlogType} from "@/api/blogType";
 
 export default {
   data() {

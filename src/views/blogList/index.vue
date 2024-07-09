@@ -46,7 +46,8 @@
       <el-table-column prop="title" label="所属分类" width="150" align="center">
         <template slot-scope="scope">{{
             scope.row.category === null ? '未分类' : scope.row.category.name
-          }}</template>
+          }}
+        </template>
       </el-table-column>
 
       <el-table-column prop="title" label="创建日期" width="230" align="center">
@@ -67,7 +68,7 @@
               icon="el-icon-edit"
               circle
               size="mini"
-              @click="editBannerHandle(scope.row)"
+              @click="editBlogHandle(scope.row)"
             ></el-button>
           </el-tooltip>
 
@@ -83,7 +84,7 @@
               icon="el-icon-delete"
               circle
               size="mini"
-              @click="deleteBlog(scope.row)"
+              @click="deleteBlogHandle(scope.row)"
             ></el-button>
           </el-tooltip>
         </template>
@@ -133,7 +134,7 @@ export default {
       getBlog(this.currentPage, this.eachPage).then(({data}) => {
         this.blogList = data.rows;
         for (let i of this.blogList) {
-          i.createDate = parseTime(i.createDate,'{y}-{m}-{d} {h}:{i}:{d}');
+          i.createDate = parseTime(i.createDate, '{y}-{m}-{d} {h}:{i}:{d}');
           i.thumb = SERVER_URL + i.thumb;
           this.srcList.push(i.thumb);
         }
@@ -150,7 +151,7 @@ export default {
     goToTitleHandle(blogInfo) {
       window.open(`${FRONTEND_URL}/article/${blogInfo.id}`);
     },
-    deleteBlog(blogInfo) {
+    deleteBlogHandle(blogInfo) {
       this.$confirm('此操作将一并删除文章下的所有评论, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -169,6 +170,9 @@ export default {
           message: '已取消删除'
         });
       });
+    },
+    editBlogHandle(blogInfo) {
+      this.$router.push(`/editBlog/${blogInfo.id}`)
     },
     // 分页相关事件
     sizeChangeHandle(pagerNum) {
