@@ -1,22 +1,29 @@
 import request from '@/utils/request'
 
-export function login(data) {
+// 登录方法
+export function loginApi(data) {
   return request({
     url: '/api/admin/login',
-    contentType: 'application/json',
     method: 'post',
     data
   })
 }
 
-export function getInfo(token) {
+// 恢复登录
+export function getInfo() {
   return request({
     url: '/api/admin/whoami',
-    contentType: 'application/json',
     method: 'get',
-    params: {
-      authorization: "Bearer " + token,
-    }
+  })
+}
+
+
+// 修改用户
+export function setUser(data) {
+  return request({
+    url: '/api/admin',
+    method: 'PUT',
+    data
   })
 }
 

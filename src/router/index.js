@@ -95,11 +95,12 @@ export const constantRoutes = [
       },
       {
         path: '/editBlog/:id',
-        name: 'EditBlog',
-        component: () => import('@/views/editBlog/index.vue'),
+        name: 'editBlog',
         hidden: true,
-        meta: {title: '编辑文章', icon: 'el-icon-edit', auth: true}
-      }
+        component: () => import('@/views/editBlog/index'),
+        meta: {title: '编辑文章', icon: 'el-icon-circle-plus', auth: true}
+      },
+
     ]
   },
 
@@ -121,7 +122,7 @@ export const constantRoutes = [
         name: 'AddProject',
         component: () => import('@/views/addProject/index'),
         meta: {title: '添加项目', icon: 'el-icon-link', auth: true}
-      }
+      },
     ]
   },
   {
